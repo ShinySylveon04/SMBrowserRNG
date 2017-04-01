@@ -4,8 +4,10 @@
   "description": "Port of wwwwwwzx's SMEncounterRNGTool for the web browser written in TypeScript.",
   "main": "main.js",
   "scripts": {
-    "compile": "tsc *.ts",
-    "test": "tsc *.ts && nodemon beefy main.js",
+    "winCompile": "dir *.ts /b > ts-files.txt && tsc @ts-files.txt",
+    "linCompile": "ls *.ts > ts-files.txt && tsc @ts-files.txt",
+    "winTest": "dir *.ts /b > ts-files.txt && tsc @ts-files.txt && nodemon beefy main.js",
+    "linTest": "ls *.ts > ts-files.txt && tsc @ts-files.txt && nodemon beefy main.js",
     "build": "browserify main.js -o webbundle.js"
   },
   "repository": {
