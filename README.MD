@@ -1,6 +1,7 @@
 # SMBrowserRNG
 
 [![pokeCalcDiscord](https://discordapp.com/assets/07dca80a102d4149e9736d4b162cff6f.ico)](https://www.discord.gg/d8JuAvg)
+
 SMBrowserRNG is a port of @wwwwwwzx's [SMEncounterRNGTool](https://github.com/wwwwwwzx/SMEncounterRNGTool) for the web browser written in TypeScript.
 
 ## About the Project
@@ -44,6 +45,9 @@ npm run build
 
 ## Credits
 Thank you to all of the pokeCalcNTR Patrons!
+
 @imaboy321 (EzPzStreamz) and @Admiral-Fish for helping develop this and pokeCalcNTR with me
+
 Everyone listed in the [pokeCalcNTR Thread's Credits](gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
+
 @wwwwwwzx for their work with Gen 7 RNG and building upon PokemonSunMoonRNGTool to make [SMEncounterRNGTool](https://github.com/wwwwwwzx/SMEncounterRNGTool)
