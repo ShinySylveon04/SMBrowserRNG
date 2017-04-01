@@ -1,0 +1,27 @@
+{
+  "name": "smbrowserrng",
+  "version": "0.1.0",
+  "description": "Port of wwwwwwzx's SMEncounterRNGTool for the web browser written in TypeScript.",
+  "main": "main.js",
+  "scripts": {
+    "compile": "tsc *.ts",
+    "test": "tsc *.ts && nodemon beefy main.js",
+    "build": "browserify main.js -o webbundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaksabeast/SMBrowserRNG.git"
+  },
+  "author": "Zaksabeast",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zaksabeast/SMBrowserRNG/issues"
+  },
+  "homepage": "https://github.com/zaksabeast/SMBrowserRNG#readme",
+  "devDependencies": {
+    "beefy": "^2.1.8",
+    "browserify": "^14.1.0",
+    "nodemon": "^1.11.0",
+    "typescript": "^2.2.2"
+  }
+}

@@ -1,0 +1,80 @@
+@import  url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  font-family: Montserrat;
+  background: #00000000;
+}
+
+.text-input{
+    position: relative;
+    margin-top: 50px;
+}
+
+input{
+    display: inline-block;
+    width: 300px;
+    height: 40px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 10px 10px 10px 100px;
+    transition: all 0.1s ease-out;
+}
+
+input + label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    border-radius: 3px 0 0 3px;
+    padding: 0 20px;
+    background: rgb(0, 153, 204);
+    transform: translateZ(0) translateX(0);
+    transition: all 0.4s ease-in;
+    transition-delay: 0s;
+}
+
+input:focus + label{
+    opacity: 0.2;
+    border-radius: 3px;
+    background: rgb(204, 51, 255);
+    transition: all 0.4s ease-out;
+}
+
+input:focus{
+    padding: 10px;
+    transition: all 0.3s ease-out;
+    transition-delay: 0s;
+}
+
+a {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-top: 10px;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    border-radius: 3px 0 0 3px;
+    padding: 10px;
+    background: rgb(0, 153, 204);
+    transition:all .3s ease;
+}
+
+.labelStretch{
+    width: 260px;
+}
+
+a:hover{
+    background: rgb(204, 51, 255);
+    transition:all .3s ease;
+}
