@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "compile": "tsc *.ts",
-    "test": "tsc *.ts && nodemon beefy main.js",
+    "winTest": "dir *.ts /b > ts-files.txt && tsc @ts-files.txt && nodemon beefy main.js",
+    "linTest": "tsc *.ts && nodemon beefy main.js",
     "build": "browserify main.js -o webbundle.js"
   },
   "repository": {

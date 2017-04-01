@@ -8,7 +8,7 @@
   ],
   "verbose": true,
   "execMap": {
-    "js": "tsc *.ts && beefy main.js"
+    "js": "tsc @ts-files.txt && del ts-files.txt && beefy main.js"
   },
   "events": {
   },

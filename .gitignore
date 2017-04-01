@@ -38,3 +38,6 @@ jspm_packages
 
 #JavaScript Files
 *.js
+
+# Text Files
+ts-files.txt
