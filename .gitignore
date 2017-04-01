@@ -3,6 +3,10 @@ logs
 *.log
 npm-debug.log*
 
+# Visual Studio Files
+*.sln
+*.njsproj
+
 # Runtime data
 pids
 *.pid
