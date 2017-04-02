@@ -25,5 +25,8 @@
     "browserify": "^14.1.0",
     "nodemon": "^1.11.0",
     "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "big-integer": "^1.6.19"
   }
 }
