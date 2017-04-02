@@ -6,6 +6,7 @@ npm-debug.log*
 # Visual Studio Files
 *.sln
 *.njsproj
+*.map
 
 # Runtime data
 pids
