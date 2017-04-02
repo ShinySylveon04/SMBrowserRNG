@@ -1,4 +1,5 @@
 ﻿import { TinyMTParameter } from "./TinyMTParameter";
+import bigInt = require("big-integer");
 
 const TINYMT32_MASK: number = 0x7FFFFFFF;
 const TINYMT32_SH0: number = 1;
@@ -7,41 +8,42 @@ const TINYMT32_SH8: number = 8;
 
 export default class TinyMT
 {
-    public status: Uint32Array;
+    public status: Array<number>;
     readonly param: TinyMTParameter;
 
-    constructor(status: Uint32Array, param: TinyMTParameter)
+    constructor(status: Array<number>, param: TinyMTParameter)
     {
-        this.status = new Uint32Array(4);
+        this.status = new Array(4);
         for (var i = 0; i < 4; i++)
             this.status[i] = status[i];
         this.param = param;
     }
 
-    nexState()
+    nextState()
     {
-        var y = this.status[3];
-        var x = (this.status[0] & TINYMT32_MASK) ^ this.status[1] ^ this.status[2];
-        this.status[0] = this.status[1];
-        this.status[1] = this.status[2];
-        this.status[2] = x ^ (y << TINYMT32_SH1);
-        this.status[3] = y;
+        var y: number = this.status[3];
+        var x: number = bigInt(this.status[0]).and(TINYMT32_MASK).xor(this.status[1]).xor(this.status[2]);
+        x = bigInt(x).xor(bigInt(x).shiftLeft(TINYMT32_SH0));
+        y = bigInt(y).xor(bigInt(y).shiftRight(TINYMT32_SH0)).xor(x);
+        this.status[0] = bigInt(this.status[1]).and(0xFFFFFFFF);
+        this.status[1] = bigInt(this.status[2]).and(0xFFFFFFFF);
+        this.status[2] = bigInt(y).shiftLeft(TINYMT32_SH1).xor(x).and(0xFFFFFFFF);
+        this.status[3] = bigInt(y).and(0xFFFFFFFF);
 
-        if ((y & 1) == 1)
+        if (bigInt(y).and(1) == 1)
         {
-            this.status[1] ^= this.param.mat1;
-            this.status[2] ^= this.param.mat2;
+            this.status[1] = bigInt(this.status[1]).xor(this.param.mat1);
+            this.status[2] = bigInt(this.status[2]).xor(this.param.mat2);
         }
     }
 
     temper()
     {
-        var t0 = this.status[3];
-        var t1 = this.status[0] + (this.status[2] >> TINYMT32_SH8);
-
-        t0 ^= t1;
+        var t0: number = this.status[3];
+        var t1: number = this.status[0] + (this.status[2] >> TINYMT32_SH8);
+        t0 = bigInt(t0).xor(t1);
         if ((t1 & 1) == 1)
-            t0 ^= this.param.tmat;
+            t0 ^= bigInt(t0).xor(this.param.tmat) & 0xFFFFFFFF;
         return t0;
     }
 }
