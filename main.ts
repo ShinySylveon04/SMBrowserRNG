@@ -27,4 +27,9 @@ title.innerHTML = "SMBrowserRNG";
 document.head.appendChild(title);
 
 //Populate the web doc with information
-document.body.innerHTML = "Info: " + tiny.status[3] + " " + tiny.status[2] + " " + tiny.status[1] + " " + tiny.status[0] + " " + tiny.temper();
+document.body.innerHTML = "Info: "
+      + tiny.status[3].toString(16) + " "
+      + tiny.status[2].toString(16) + " "
+      + tiny.status[1].toString(16) + " "
+      + tiny.status[0].toString(16) + " "
+      + tiny.temper().toString(16);

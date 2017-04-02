@@ -25,10 +25,10 @@ export default class TinyMT
         var x: number = bigInt(this.status[0]).and(TINYMT32_MASK).xor(this.status[1]).xor(this.status[2]);
         x = bigInt(x).xor(bigInt(x).shiftLeft(TINYMT32_SH0));
         y = bigInt(y).xor(bigInt(y).shiftRight(TINYMT32_SH0)).xor(x);
-        this.status[0] = this.status[1];
-        this.status[1] = this.status[2];
-        this.status[2] = bigInt(y).shiftLeft(TINYMT32_SH1).xor(x);
-        this.status[3] = y;
+        this.status[0] = bigInt(this.status[1]).and(0xFFFFFFFF);
+        this.status[1] = bigInt(this.status[2]).and(0xFFFFFFFF);
+        this.status[2] = bigInt(y).shiftLeft(TINYMT32_SH1).xor(x).and(0xFFFFFFFF);
+        this.status[3] = bigInt(y).and(0xFFFFFFFF);
 
         if (bigInt(y).and(1) == 1)
         {
@@ -43,7 +43,7 @@ export default class TinyMT
         var t1: number = this.status[0] + (this.status[2] >> TINYMT32_SH8);
         t0 = bigInt(t0).xor(t1);
         if ((t1 & 1) == 1)
-            t0 ^= bigInt(t0).xor(this.param.tmat);
+            t0 ^= bigInt(t0).xor(this.param.tmat) & 0xFFFFFFFF;
         return t0;
     }
 }
