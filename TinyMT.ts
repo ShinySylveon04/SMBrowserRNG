@@ -36,14 +36,13 @@ export default class TinyMT
             this.status[2] = bigInt(this.status[2]).xor(this.param.mat2);
         }
     }
-
-    temper()
-    {
-        var t0: number = this.status[3];
-        var t1: number = this.status[0] + (this.status[2] >> TINYMT32_SH8);
+    
+    temper() {
+        var t0: number = bigInt(this.status[3]).and(0xFFFFFFFF);
+        var t1: number = bigInt(this.status[0]).add(bigInt(this.status[2]).shiftRight(TINYMT32_SH8));
         t0 = bigInt(t0).xor(t1);
         if ((t1 & 1) == 1)
-            t0 ^= bigInt(t0).xor(this.param.tmat) & 0xFFFFFFFF;
+            t0 = bigInt(t0).xor(this.param.tmat).and(0xFFFFFFFF);
         return t0;
     }
 }
