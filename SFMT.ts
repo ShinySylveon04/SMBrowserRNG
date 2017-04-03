@@ -1,5 +1,6 @@
 import { RandomBase } from "./RandomBase";
 import DeepCopy = require("deepcopy");
+import bigInt = require("big-integer");
 
 type UInt32 = number;
 type int = number;
@@ -52,6 +53,7 @@ type int = number;
         this.SR2_x8 = 8;
         this.SL2_ix8 = 56;
         this.SR2_ix8 = 56;
+        this.init_gen_rand(seed);
     }
 
     public UInt32()
@@ -70,7 +72,7 @@ type int = number;
         this.sfmt = new Uint32Array(this.N32);
         this.sfmt[0] = seed;
         for (i = 1; i < this.N32; i++)
-            this.sfmt[i] = 1812433253 * (this.sfmt[i - 1] ^ (this.sfmt[i - 1] >> 30)) + i;
+            this.sfmt[i] = bigInt(1812433253).multiply(bigInt(this.sfmt[i - 1]).xor(bigInt(this.sfmt[i - 1]).shiftRight30)).add(i).and(0xFFFFFFFF);
         this.period_certification();
         this.idx = this.N32;
     }
@@ -92,7 +94,7 @@ type int = number;
             {
                 if ((work & PARITY[i]) != 0)
                 {
-                    this.sfmt[i] = this.sfmt[i] ^ work;
+                    this.sfmt[i] = bigInt(this.sfmt[i]).xor(work).and(0xFFFFFFFF);
                     return;
                 }
                 work = work << 1;
@@ -110,10 +112,10 @@ type int = number;
         d = 620;
         do
         {
-            this.sfmt[a + 3] = this.sfmt[a + 3] ^ (this.sfmt[a + 3] << 8) ^ (this.sfmt[a + 2] >> 24) ^ (this.sfmt[c + 3] >> 8) ^ ((this.sfmt[b + 3] >> this.SR1) & this.MSK4) ^ (this.sfmt[d + 3] << this.SL1);
-            this.sfmt[a + 2] = this.sfmt[a + 2] ^ (this.sfmt[a + 2] << 8) ^ (this.sfmt[a + 1] >> 24) ^ (this.sfmt[c + 3] << 24) ^ (this.sfmt[c + 2] >> 8) ^ ((this.sfmt[b + 2] >> this.SR1) & this.MSK3) ^ (this.sfmt[d + 2] << this.SL1);
-            this.sfmt[a + 1] = this.sfmt[a + 1] ^ (this.sfmt[a + 1] << 8) ^ (this.sfmt[a + 0] >> 24) ^ (this.sfmt[c + 2] << 24) ^ (this.sfmt[c + 1] >> 8) ^ ((this.sfmt[b + 1] >> this.SR1) & this.MSK2) ^ (this.sfmt[d + 1] << this.SL1);
-            this.sfmt[a + 0] = this.sfmt[a + 0] ^ (this.sfmt[a + 0] << 8) ^ (this.sfmt[c + 1] << 24) ^ (this.sfmt[c + 0] >> 8) ^ ((this.sfmt[b + 0] >> this.SR1) & this.MSK1) ^ (this.sfmt[d + 0] << this.SL1);
+            this.sfmt[a + 3] = bigInt(this.sfmt[a + 3]).xor(bigInt(this.sfmt[a + 3]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 2]).shiftRight(24)).xor(bigInt(this.sfmt[c + 3]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 3]).shiftRight(this.SR1)).and(this.MSK4)).xor(bigInt(this.sfmt[d + 3]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
+            this.sfmt[a + 2] = bigInt(this.sfmt[a + 2]).xor(bigInt(this.sfmt[a + 2]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 1]).shiftRight(24)).xor(bigInt(this.sfmt[c + 3]).shiftLeft(24)).xor(bigInt(this.sfmt[c + 2]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 2]).shiftRight(this.SR1)).and(this.MSK3)).xor(bigInt(this.sfmt[d + 2]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
+            this.sfmt[a + 1] = bigInt(this.sfmt[a + 1]).xor(bigInt(this.sfmt[a + 1]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 0]).shiftRight(24)).xor(bigInt(this.sfmt[c + 2]).shiftLeft(24)).xor(bigInt(this.sfmt[c + 1]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 1]).shiftRight(this.SR1)).and(this.MSK2)).xor(bigInt(this.sfmt[d + 1]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
+            this.sfmt[a + 0] = bigInt(this.sfmt[a + 0]).xor(bigInt(this.sfmt[a + 0]).shiftLeft(8)).xor(bigInt(this.sfmt[c + 1]).shiftLeft(24)).xor(bigInt(this.sfmt[c + 0]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 0]).shiftRight(this.SR1)).and(this.MSK1)).xor(bigInt(this.sfmt[d + 0]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
             c = d;
             d = a;
             a += 4;
