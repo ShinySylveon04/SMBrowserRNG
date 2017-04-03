@@ -1,18 +1,18 @@
 import bigInt = require("big-integer");
 
 export abstract class RandomBase {
-    public abstract UInt32(): number;
+    public abstract NextUInt32(): number;
 
-    public NextUInt32(): number {
-        return this.UInt32();
+    public UInt32(): number {
+        return this.NextUInt32();
     }
 
-    public UInt64(): number {
-        return bigInt(this.NextUInt32()).or(bigInt(this.NextUInt32()).leftShift(32));
+    public NextUInt64(): number {
+        return bigInt(this.NextUInt32()).or(bigInt(this.NextUInt32()).shiftLeft(32));
     }
 
-    public Int64(): number {
-        return bigInt(this.NextUInt32()).leftShift(32).or(bigInt(this.NextUInt32()));
+    public NextInt64(): number {
+        return bigInt(this.NextUInt32()).shiftLeft(32).or(bigInt(this.NextUInt32()));
     }
 
     public NextByte(buffer: Uint8Array): void {
@@ -22,18 +22,18 @@ export abstract class RandomBase {
         while (i + 4 <= buffer.length) {
             r = this.NextUInt32();
             buffer[i++] = bigInt(r).and(0xFF);
-            buffer[i++] = bigInt(r).rightShift(8).and(0xFF);
-            buffer[i++] = bigInt(r).rightShift(16).and(0xFF);
-            buffer[i++] = bigInt(r).rightShift(24).and(0xFF);
+            buffer[i++] = bigInt(r).shiftRight(8).and(0xFF);
+            buffer[i++] = bigInt(r).shiftRight(16).and(0xFF);
+            buffer[i++] = bigInt(r).shiftRight(24).and(0xFF);
         }
 
         if (i >= buffer.length) return;
         r = this.NextUInt32();
         buffer[i++] = bigInt(r).and(0xFF);
         if (i >= buffer.length) return;
-        buffer[i++] = bigInt(r).rightShift(8).and(0xFF);
+        buffer[i++] = bigInt(r).shiftRight(8).and(0xFF);
         if (i >= buffer.length) return;
-        buffer[i++] = bigInt(r).rightShift(16).and(0xFF);
+        buffer[i++] = bigInt(r).shiftRight(16).and(0xFF);
     }
 
     public NextDouble() : number {
