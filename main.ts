@@ -1,19 +1,57 @@
 import TinyMT from "./TinyMT";
 import { TinyMTParameter } from "./TinyMTParameter";
-
+import { EggRNGSearch } from "./EggRNGSearch";
 
 function greeter(person) {
     return "Placeholder code for " + person + " to get in sync!";
 }
 
+function getEggRNGSettings(): void {
+    var pre_parent: number[] = [31, 31, 31, 31, 31, 31];
+    var post_parent: number[] = [31, 31, 31, 31, 31, 31];
+    var sex_threshold = 126;
+
+    EggRNGSearch.GenderRatio = sex_threshold;
+    EggRNGSearch.GenderRandom = true;
+    EggRNGSearch.GenderMale = false;
+    EggRNGSearch.GenderFemale = false;
+    EggRNGSearch.International = true;
+    EggRNGSearch.ShinyCharm = true;
+    EggRNGSearch.Heterogeneous = true;
+    EggRNGSearch.Both_Everstone = false;
+    EggRNGSearch.Everstone = true;
+    EggRNGSearch.DestinyKnot = true;
+    EggRNGSearch.Both_PowerItems = false;
+    EggRNGSearch.PowerItems = false;
+    EggRNGSearch.MalePowerStat = -2;
+    EggRNGSearch.FemalePowerStat = -1;
+    EggRNGSearch.ParentAbility = 1;
+    EggRNGSearch.ConciderTSV = true;
+    EggRNGSearch.SearchOtherTSV = false;
+
+    EggRNGSearch.TSV = 2686;
+    EggRNGSearch.pre_parent = pre_parent;
+    EggRNGSearch.post_parent = post_parent;
+
+    EggRNGSearch.Initialize();
+}
+
 var user = "pokeCalcDevs";
-var status: Array<number> = new Array(4);
-status[3] = 0xBB416559;
-status[2] = 0x697EDD9A;
-status[1] = 0x79548181;
-status[0] = 0xDB34CB83;
+var st: Array<number> = new Array(4);
+st[3] = 0xF50D55B8;
+st[2] = 0x09690FDA;
+st[1] = 0x01B95825;
+st[0] = 0x7A6CBDA0;
+
+var status: Array<number> = [st[0], st[1], st[2], st[3]];
 var tiny = new TinyMT(status, new TinyMTParameter(0x8f7011ee, 0xfc78ff1f, 0x3793fdff));
+
+st = tiny.status.slice(0);
+getEggRNGSettings();
+var result: EggRNGSearch.EGGRNGResult = EggRNGSearch.Generate(st);
 tiny.nextState();
+st = tiny.status.slice(0);
+var result2: EggRNGSearch.EGGRNGResult = EggRNGSearch.Generate(st);
 
 //Link CSS to the web doc
 var css = document.createElement("link");
@@ -28,8 +66,4 @@ document.head.appendChild(title);
 
 //Populate the web doc with information
 document.body.innerHTML = "Info: "
-      + tiny.status[3].toString(16) + " "
-      + tiny.status[2].toString(16) + " "
-      + tiny.status[1].toString(16) + " "
-      + tiny.status[0].toString(16) + " "
-      + tiny.temper().toString(16);
+    + JSON.stringify(result) + "\n" + JSON.stringify(result2);
