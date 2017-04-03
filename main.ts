@@ -1,4 +1,5 @@
 import TinyMT from "./TinyMT";
+import SFMT from "./SFMT";
 import { TinyMTParameter } from "./TinyMTParameter";
 import { EggRNGSearch } from "./EggRNGSearch";
 
@@ -36,6 +37,9 @@ function getEggRNGSettings(): void {
     EggRNGSearch.Initialize();
 }
 
+var sfmt: SFMT = new SFMT(0x4D413562);
+
+
 var user = "pokeCalcDevs";
 var st: Array<number> = new Array(4);
 st[3] = 0xF50D55B8;
@@ -66,4 +70,4 @@ document.head.appendChild(title);
 
 //Populate the web doc with information
 document.body.innerHTML = "Info: "
-    + JSON.stringify(result) + "\n" + JSON.stringify(result2);
+    + sfmt.NextUInt64().toString(16);

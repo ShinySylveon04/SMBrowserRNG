@@ -56,7 +56,7 @@ type int = number;
         this.init_gen_rand(seed);
     }
 
-    public UInt32()
+    public NextUInt32()
     {
         if (this.idx >= this.N32)
         {
@@ -72,7 +72,7 @@ type int = number;
         this.sfmt = new Uint32Array(this.N32);
         this.sfmt[0] = seed;
         for (i = 1; i < this.N32; i++)
-            this.sfmt[i] = bigInt(1812433253).multiply(bigInt(this.sfmt[i - 1]).xor(bigInt(this.sfmt[i - 1]).shiftRight30)).add(i).and(0xFFFFFFFF);
+            this.sfmt[i] = bigInt(1812433253).multiply(bigInt(this.sfmt[i - 1]).xor(bigInt(this.sfmt[i - 1]).shiftRight(30))).add(i).and(0xFFFFFFFF);
         this.period_certification();
         this.idx = this.N32;
     }
