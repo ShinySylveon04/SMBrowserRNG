@@ -1,7 +1,7 @@
 import TinyMT from "./TinyMT";
 import SFMT from "./SFMT";
 import { TinyMTParameter } from "./TinyMTParameter";
-import { EggRNGSearch } from "./EggRNGSearch";
+import * as EggRNGSearch from "./EggRNGSearch";
 
 function greeter(person) {
     return "Placeholder code for " + person + " to get in sync!";
@@ -83,35 +83,38 @@ parentIVTable.appendChild(tr_button);
 eggForm.appendChild(parentIVTable);
 document.body.appendChild(eggForm);
 
-function getEggRNGSettings(): void {
+function getEggRNGSettings(): EggRNGSearch.EggRNGSearch {
     var pre_parent: number[] = [Number((<HTMLInputElement>document.getElementById("nud_pre_parent1")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent2")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent3")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent4")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent5")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent6")).value)];
     var post_parent: number[] = [Number((<HTMLInputElement>document.getElementById("nud_post_parent1")).value), Number((<HTMLInputElement>document.getElementById("nud_post_parent2")).value), Number((<HTMLInputElement>document.getElementById("nud_post_parent3")).value), Number((<HTMLInputElement>document.getElementById("nud_post_parent4")).value), Number((<HTMLInputElement>document.getElementById("nud_post_parent5")).value), Number((<HTMLInputElement>document.getElementById("nud_post_parent6")).value)];
     var sex_threshold = 126;
-    console.log(pre_parent);
-    console.log(post_parent);
-    EggRNGSearch.GenderRatio = sex_threshold;
-    EggRNGSearch.GenderRandom = true;
-    EggRNGSearch.GenderMale = false;
-    EggRNGSearch.GenderFemale = false;
-    EggRNGSearch.International = true;
-    EggRNGSearch.ShinyCharm = true;
-    EggRNGSearch.Heterogeneous = true;
-    EggRNGSearch.Both_Everstone = false;
-    EggRNGSearch.Everstone = true;
-    EggRNGSearch.DestinyKnot = true;
-    EggRNGSearch.Both_PowerItems = false;
-    EggRNGSearch.PowerItems = false;
-    EggRNGSearch.MalePowerStat = -2;
-    EggRNGSearch.FemalePowerStat = -1;
-    EggRNGSearch.ParentAbility = 1;
-    EggRNGSearch.ConciderTSV = true;
-    EggRNGSearch.SearchOtherTSV = false;
 
-    EggRNGSearch.TSV = 2686;
-    EggRNGSearch.pre_parent = pre_parent;
-    EggRNGSearch.post_parent = post_parent;
+    var rng: EggRNGSearch.EggRNGSearch = new EggRNGSearch.EggRNGSearch();
 
-    EggRNGSearch.Initialize();
+    rng.GenderRatio = sex_threshold;
+    rng.GenderRandom = true;
+    rng.GenderMale = false;
+    rng.GenderFemale = false;
+    rng.International = true;
+    rng.ShinyCharm = true;
+    rng.Heterogeneous = true;
+    rng.Both_Everstone = false;
+    rng.Everstone = true;
+    rng.DestinyKnot = true;
+    rng.Both_PowerItems = false;
+    rng.PowerItems = false;
+    rng.MalePowerStat = -2;
+    rng.FemalePowerStat = -1;
+    rng.ParentAbility = 1;
+    rng.ConciderTSV = true;
+    rng.SearchOtherTSV = false;
+
+    rng.TSV = 2686;
+    rng.pre_parent = pre_parent;
+    rng.post_parent = post_parent;
+
+    rng.Initialize();
+
+    return rng;
 }
 
 function generate(): void {
@@ -126,11 +129,13 @@ function generate(): void {
     var status: Array<number> = [st[0], st[1], st[2], st[3]];
     var tiny = new TinyMT(status, new TinyMTParameter(0x8f7011ee, 0xfc78ff1f, 0x3793fdff));
 
+    var rng = getEggRNGSettings();
+
     st = tiny.status.slice(0);
-    var result: EggRNGSearch.EGGRNGResult = EggRNGSearch.Generate(st);
+    var result: EggRNGSearch.EGGRNGResult = rng.Generate(st);
     tiny.nextState();
     st = tiny.status.slice(0);
-    var result2: EggRNGSearch.EGGRNGResult = EggRNGSearch.Generate(st);
+    var result2: EggRNGSearch.EGGRNGResult = rng.Generate(st);
 
     document.body.innerHTML += JSON.stringify(result) + "<br /><br />" + JSON.stringify(result2);
 }
