@@ -5,8 +5,7 @@ import bigInt = require("big-integer");
 type UInt32 = number;
 type int = number;
 
-﻿export default class SFMT extends RandomBase
-{
+﻿export default class SFMT extends RandomBase {
     public MEXP: int;
     public POS1: int;
     public SL1: int;
@@ -30,8 +29,7 @@ type int = number;
     public sfmt: Uint32Array;
     public idx: int;
 
-    constructor(seed: UInt32)
-    {
+    constructor(seed: UInt32) {
         super();
         this.MEXP = 19937;
         this.POS1 = 122;
@@ -56,18 +54,15 @@ type int = number;
         this.init_gen_rand(seed);
     }
 
-    public NextUInt32()
-    {
-        if (this.idx >= this.N32)
-        {
+    public NextUInt32() {
+        if (this.idx >= this.N32) {
             this.gen_rand_all_19937();
             this.idx = 0;
         }
         return this.sfmt[this.idx++];
     }
 
-    public init_gen_rand(seed: UInt32)
-    {
+    public init_gen_rand(seed: UInt32) {
         var i: number;
         this.sfmt = new Uint32Array(this.N32);
         this.sfmt[0] = seed;
@@ -77,8 +72,7 @@ type int = number;
         this.idx = this.N32;
     }
 
-    public period_certification()
-    {
+    public period_certification() {
         var PARITY: Uint32Array = new Uint32Array(4);
         PARITY[0] = this.PARITY1;
         PARITY[1] = this.PARITY2;
@@ -87,13 +81,10 @@ type int = number;
         var i, j: number;
         var work: UInt32;
 
-        for (i = 0; i < 4; i++)
-        {
+        for (i = 0; i < 4; i++) {
             work = 1;
-            for (j = 0; j < 32; j++)
-            {
-                if ((work & PARITY[i]) != 0)
-                {
+            for (j = 0; j < 32; j++) {
+                if ((work & PARITY[i]) != 0) {
                     this.sfmt[i] = bigInt(this.sfmt[i]).xor(work).and(0xFFFFFFFF);
                     return;
                 }
@@ -102,16 +93,14 @@ type int = number;
         }
     }
 
-    public gen_rand_all_19937()
-    {
+    public gen_rand_all_19937() {
         var a, b, c, d: number;
 
         a = 0;
         b = 488;
         c = 616;
         d = 620;
-        do
-        {
+        do {
             this.sfmt[a + 3] = bigInt(this.sfmt[a + 3]).xor(bigInt(this.sfmt[a + 3]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 2]).shiftRight(24)).xor(bigInt(this.sfmt[c + 3]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 3]).shiftRight(this.SR1)).and(this.MSK4)).xor(bigInt(this.sfmt[d + 3]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
             this.sfmt[a + 2] = bigInt(this.sfmt[a + 2]).xor(bigInt(this.sfmt[a + 2]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 1]).shiftRight(24)).xor(bigInt(this.sfmt[c + 3]).shiftLeft(24)).xor(bigInt(this.sfmt[c + 2]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 2]).shiftRight(this.SR1)).and(this.MSK3)).xor(bigInt(this.sfmt[d + 2]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
             this.sfmt[a + 1] = bigInt(this.sfmt[a + 1]).xor(bigInt(this.sfmt[a + 1]).shiftLeft(8)).xor(bigInt(this.sfmt[a + 0]).shiftRight(24)).xor(bigInt(this.sfmt[c + 2]).shiftLeft(24)).xor(bigInt(this.sfmt[c + 1]).shiftRight(8)).xor(bigInt(bigInt(this.sfmt[b + 1]).shiftRight(this.SR1)).and(this.MSK2)).xor(bigInt(this.sfmt[d + 1]).shiftLeft(this.SL1)).and(0xFFFFFFFF);
@@ -121,7 +110,7 @@ type int = number;
             a += 4;
             b += 4;
             if (b >= this.N32)
-                b = 0; 
+                b = 0;
         } while (a < this.N32);
     }
 }
