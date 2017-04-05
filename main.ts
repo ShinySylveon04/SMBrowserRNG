@@ -3,6 +3,7 @@ import SFMT from "./SFMT";
 import { TinyMTParameter } from "./TinyMTParameter";
 import * as EggRNGSearch from "./EggRNGSearch";
 import { RNGSearch } from "./RNGSearch";
+import { ModelStatus } from "./ModelStatus";
 import bigInt = require("big-integer");
 import deepcopy = require("deepcopy");
 
@@ -84,7 +85,7 @@ parentIVTable.appendChild(tr_button);
 eggForm.appendChild(parentIVTable);
 document.body.appendChild(eggForm);
 
-
+var ModelNumber: number = 1;
 
 function getEggRNGSettings(): EggRNGSearch.EggRNGSearch {
     var pre_parent: number[] = [Number((<HTMLInputElement>document.getElementById("nud_pre_parent1")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent2")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent3")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent4")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent5")).value), Number((<HTMLInputElement>document.getElementById("nud_pre_parent6")).value)];
@@ -189,7 +190,10 @@ function Checkafter(Randlist: number[]): number {
 }
 
 function getblinkflaglist(min: number, max: number, seed: number): number[] {
-    var blinkflaglist: number[] = new Array(max - min + 2);
+    var blinkflaglist: number[] = new Array();
+    for (var i = 0; i < max - min + 2; i++)
+        blinkflaglist.push(0);
+
     var Model_n: number = 1;
     var st: SFMT = new SFMT(seed);
     var blink_flag: number = 0;
@@ -198,21 +202,22 @@ function getblinkflaglist(min: number, max: number, seed: number): number[] {
         var rand: number;
         for (var i = 0; i < min - 2; i++)
             st.NextUInt64();
-        if (bigInt(st.NextUInt64()).and(0x7F) == 0) {
-            var temp = st.NextUInt64();
-            blinkflaglist[0] = temp - 3 * Math.floor(temp / 3) == 0 ? 36 : 30;
-        } else if (bigInt(st.NextUInt64()).and(0x7F) == 0) {
+        if (bigInt(st.NextUInt64()).and(0x7F).and(0xFFFFFFFF) == 0) {
+            blinkflaglist[0] = bigInt(st.NextUInt64).mod(3).and(0xFFFFFFFF) == 0 ? 36 : 30;
+        } else if (bigInt(st.NextUInt64()).and(0x7F).and(0xFFFFFFFF) == 0) {
             blink_flag = 1;
         }
+
+        console.log(blink_flag);
 
         for (var i = min; i <= max; i++) {
             rand = st.NextUInt64();
             if (blink_flag == 1) {
                 blinkflaglist[i - min] = 5;
-                blinkflaglist[++i - min] = rand - 3 * Math.floor(rand / 3) == 0 ? 36 : 30;
+                blinkflaglist[++i - min] = bigInt(rand).mod(3).and(0xFFFFFFFF) == 0 ? 36 : 30;
                 blink_flag = 0; rand = st.NextUInt64();
             }
-            if (bigInt(rand).and(0x7F) == 0) {
+            if (bigInt(rand).and(0x7F).and(0xFFFFFFFF) == 0) {
                 blink_flag = 1;
                 blinkflaglist[i - min] = 1;
             }
@@ -253,7 +258,7 @@ function generateStationary(): void {
     var Blinkflaglist: number[] = getblinkflaglist(418, 5000, 0xF734CF2F);
 
     for (var i = 0; i < 419; i++)
-        sfmt.NextUInt64().toString(16);
+        sfmt.NextUInt64();
 
     RNGSearch.CreateBuffer(sfmt, true);
 
@@ -266,7 +271,62 @@ function generateStationary(): void {
 
 }
 
-generateStationary();
+function CreateNPCStatus(seed: number): ModelStatus.ModelStatus {
+    ModelStatus.Modelnumber = 1;
+    ModelStatus.sfmt = new SFMT(seed);
+    return new ModelStatus.ModelStatus();
+}
+
+function createtimeline(): void {
+    var sfmt: SFMT = new SFMT(0xF734CF2F);
+
+    var start_frame: number = 418;
+    var start_flag: number = getblinkflaglist(start_frame, start_frame, 0xF734CF2F)[0];
+
+    for (var i = 0; i < start_frame; i++)
+        sfmt.NextUInt64();
+
+    var st = CreateNPCStatus(0xF734CF2F);
+    var rng: RNGSearch.RNGSearch = getRNGSettings();
+    RNGSearch.ResetModelStatus();
+    RNGSearch.CreateBuffer(sfmt, true);
+
+    var totaltime: number = 10 * 30;
+    var frame: number = 418;
+    var frameadvance: number;
+    var CurrentFrame: number;
+
+    var tempList: RNGSearch.RNGResult[] = new Array();
+
+    for (var i = 0; i <= totaltime; i++) {
+        CurrentFrame = frame;
+        RNGSearch.remain_frame = st.remain_frame.slice(0);
+        RNGSearch.blink_flag = st.blink_flag.slice(0);
+
+        var result: RNGSearch.RNGResult = rng.Generate();
+
+        if (i == 0) result.Blink = start_flag;
+        if ((RNGSearch.IsSolgaleo || RNGSearch.IsLunala) && ModelNumber == 7) RNGSearch.modelnumber = 7;
+
+        result.realtime = i;
+        frameadvance = st.NextState();
+        console.log(frameadvance);
+        frame += frameadvance;
+
+        for (var j = 0; j < frameadvance; j++) {
+            RNGSearch.Rand.splice(0, 1);
+            RNGSearch.Rand.push(sfmt.NextUInt64());
+        }
+
+        tempList.push(result);
+
+    }
+
+    document.body.innerHTML += JSON.stringify(tempList[0]) + "<br /><br />" + JSON.stringify(tempList[1]);
+
+}
+
+createtimeline();
 
 var user = "pokeCalcDevs";
 
