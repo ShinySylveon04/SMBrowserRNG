@@ -8,7 +8,7 @@
     "linCompile": "ls *.ts > ts-files.txt && tsc @ts-files.txt",
     "winTest": "dir *.ts /b > ts-files.txt && tsc @ts-files.txt && nodemon beefy main.js",
     "linTest": "ls *.ts > ts-files.txt && tsc @ts-files.txt && nodemon beefy main.js",
-    "winClean": "del *.js",
+    "winClean": "del *.js && del *.js.map",
     "linClean": "rm *.js",
     "build": "browserify main.js -o webbundle.js"
   },

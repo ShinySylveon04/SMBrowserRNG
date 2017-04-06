@@ -51,7 +51,8 @@ type int = number;
         this.SR2_x8 = 8;
         this.SL2_ix8 = 56;
         this.SR2_ix8 = 56;
-        this.init_gen_rand(seed);
+        if (seed != -1)
+            this.init_gen_rand(seed);
     }
 
     public NextUInt32() {
@@ -113,4 +114,16 @@ type int = number;
                 b = 0;
         } while (a < this.N32);
     }
+
+    public deepCopy() {
+        var tempsfmt: SFMT = new SFMT(-1);
+
+        for (var i = 0; i < 624; i++)
+            tempsfmt.sfmt[i] = this.sfmt[i];
+
+        tempsfmt.idx = this.idx;
+
+        return tempsfmt;
+    }
+
 }

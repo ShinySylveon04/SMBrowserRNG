@@ -269,8 +269,3 @@ function generateStationary(): void {
 generateStationary();
 
 var user = "pokeCalcDevs";
-
-
-
-
-
