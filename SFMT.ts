@@ -1,6 +1,7 @@
 import { RandomBase } from "./RandomBase";
 import DeepCopy = require("deepcopy");
 import bigInt = require("big-integer");
+import { dataCopy } from "./utils";
 
 type UInt32 = number;
 type int = number;
@@ -51,8 +52,7 @@ type int = number;
         this.SR2_x8 = 8;
         this.SL2_ix8 = 56;
         this.SR2_ix8 = 56;
-        if (seed != -1)
-            this.init_gen_rand(seed);
+        this.init_gen_rand(seed);
     }
 
     public NextUInt32() {
@@ -115,15 +115,8 @@ type int = number;
         } while (a < this.N32);
     }
 
-    public deepCopy() {
-        var tempsfmt: SFMT = new SFMT(-1);
-
-        for (var i = 0; i < 624; i++)
-            tempsfmt.sfmt[i] = this.sfmt[i];
-
-        tempsfmt.idx = this.idx;
-
-        return tempsfmt;
+    public deepCopy(tempsfmt: SFMT) {
+        return dataCopy(tempsfmt);
     }
 
 }
