@@ -329,8 +329,3 @@ function createtimeline(): void {
 createtimeline();
 
 var user = "pokeCalcDevs";
-
-
-
-
-

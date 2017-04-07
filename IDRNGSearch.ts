@@ -1,15 +1,15 @@
-﻿import bigInt = require("big-integer");
+﻿//Add click function to controller to start search
+
+import bigInt = require("big-integer");
 import SFMT from "./SFMT";
 
 type UInt32 = number;
 type int = number;
 
-export class IDRNGSearch
-{
+export class IDRNGSearch {
     public Clock_CorrectionValue: int;
 
-    Generate(sfmt: SFMT): IDRNGResult
-    {
+    Generate(sfmt: SFMT): IDRNGResult {
         var id: IDRNGResult = new IDRNGResult();
 
         id.row_r = sfmt.NextUInt64();
@@ -28,10 +28,10 @@ export class IDRNGSearch
 
         return id;
     }
+
 }
 
-export class IDRNGResult
-{
+export class IDRNGResult {
     public Clock: int;
     public TID: UInt32;
     public SID: UInt32;
