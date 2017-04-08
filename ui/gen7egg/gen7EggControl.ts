@@ -1,4 +1,4 @@
-import { IVs, generateButton, rngOutput } from "../utils/genericUI";
+import { IVs, generateButton, rngOutput, natureList, genderList } from "../utils/genericUI";
 import { eggRNGView } from "./gen7EggView";
 
 export class gen7EggUi {
@@ -14,8 +14,8 @@ export class gen7EggUi {
         ];
         let listNames = ["Item", "Ability"];
         let generalList = [
-            ["difSpec", "mmCheck", "scCheck"],
-            ["Different Species", "Masuda Method", "Shiny Charm"]
+            ["difSpec", "mmCheck", "scCheck", "shinyOnly"],
+            ["Different Species", "Masuda Method", "Shiny Charm", "Shiny Only"]
         ];
         let genderList = [
             ["50", "875", "75", "25", "100", "0", "genderless"],
@@ -26,7 +26,6 @@ export class gen7EggUi {
             "isDitto": [],
             "seeds": []
         };
-        var rngSettingFilters = [];
 
         //Parents
         for (let z = 1; z<=2; z++){
@@ -105,7 +104,7 @@ export class gen7EggUi {
         generalEggSettingsContainer.appendChild(generalLabel);
 
         //Actual General Settings
-        for(let i = 0; i<3; i++){
+        for(let i = 0; i<generalList[0].length; i++){
             let subContainer = document.createElement("div");
             subContainer.setAttribute("class", "subContainer");
             let subLabel = document.createElement("label");
@@ -226,6 +225,7 @@ function generateResults(parameters, resultBox, frameAmount, document){
 
     //Create New rows and populate with results
     for(let i = 0; i<eggRngFinished.rngResult.length; i++){
+        let dataOut = eggRngFinished.rngResult[i];
         //Create Table Row and Cells
         let outRow = document.createElement("tr");
         let outFrame = document.createElement("td");
@@ -238,7 +238,6 @@ function generateResults(parameters, resultBox, frameAmount, document){
         let outPID = document.createElement("td");
         let outPSV = document.createElement("td");
         let outEC = document.createElement("td");
-        let dataOut = eggRngFinished.rngResult[i];
         let formattedIVs = "";
         let formattedSeeds = "";
 
@@ -263,15 +262,14 @@ function generateResults(parameters, resultBox, frameAmount, document){
         outAbility.innerHTML = dataOut.Ability;
         outEC.innerHTML = dataOut.EC;
         outFrameAdv.innerHTML = dataOut.FramesUsed;
-        outGender.innerHTML = dataOut.Gender;
-        outNature.innerHTML = dataOut.Nature;
+        outGender.innerHTML = genderList[0][dataOut.Gender];
+        outNature.innerHTML = natureList[dataOut.Nature];
         outSeed.innerHTML = formattedSeeds;
         outPID.innerHTML = dataOut.PID;
         outPSV.innerHTML = dataOut.PSV;
         outFrame.innerHTML = i;
 
         //Attach Cells to Row and Tow to Table
-        outTable.appendChild(outRow);
         outRow.appendChild(outFrame);
         outRow.appendChild(outFrameAdv);
         outRow.appendChild(outSeed);
@@ -282,6 +280,20 @@ function generateResults(parameters, resultBox, frameAmount, document){
         outRow.appendChild(outPID);
         outRow.appendChild(outPSV);
         outRow.appendChild(outEC);
+
+        //Poor filter
+        if(parameters.shinyOnly.checked==true){
+            if(dataOut.PSV == parameters.TSV.value){
+                outTable.appendChild(outRow);
+            }
+        } else {
+            outTable.appendChild(outRow);
+        }
+    }
+
+    //Remove Previous Resultswhile (myNode.firstChild) {
+    while (resultBox.firstChild) {
+        resultBox.removeChild(resultBox.firstChild);
     }
 
     //Show Results
