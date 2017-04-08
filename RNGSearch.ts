@@ -23,8 +23,12 @@ export module RNGSearch {
     }
 
     export function ResetModelStatus(): void {
-        remain_frame = new Array(modelnumber);
-        blink_flag = new Array(modelnumber);
+        remain_frame = new Array();
+        blink_flag = new Array();
+        for (var i = 0; i < modelnumber; i++) {
+            remain_frame.push(0);
+            blink_flag.push(false);
+        }
     }
 
     export var IsSolgaleo: boolean;
@@ -97,7 +101,7 @@ export module RNGSearch {
                 var temp = getRand();
                 if (remain_frame[i] == 0) {
                     if (blink_flag[i]) {
-                        remain_frame[i] = temp - 3 * Math.floor(temp / 3) == 0 ? 36 : 30;
+                        remain_frame[i] = bigInt(temp).mod(3).and(0xFFFFFFFF) == 0 ? 36 : 30;
                         blink_flag[i] = false;
                     } else if (bigInt(temp).and(0x7F).and(0xFFFFFFFF) == 0) {
                         remain_frame[i] = 5;
@@ -166,8 +170,10 @@ export module RNGSearch {
             st.row_r = Rand[0];
             st.Clock = bigInt(st.row_r).mod(17).and(0xFF);
 
-            if (!Considerhistory)
+            if (!Considerhistory) {
                 ResetModelStatus();
+            }
+                
 
             st.frameshift = this.getFrameShift();
 
