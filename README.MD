@@ -2,7 +2,7 @@
 
 [![pokeCalcDiscord](https://discordapp.com/assets/07dca80a102d4149e9736d4b162cff6f.ico)](https://www.discord.gg/d8JuAvg)
 
-SMBrowserRNG is a port of @wwwwwwzx's [SMEncounterRNGTool](https://github.com/wwwwwwzx/SMEncounterRNGTool) for the web browser written in TypeScript.
+Browser-Based RNG Tool!  More descriptive description coming soon!
 
 ## About the Project
 
@@ -22,15 +22,17 @@ npm install -d
 
 ### Compiling
 ```
-npm run compile
+npm run winCompile
+npm run linCompile
 ```
-"compile" will tranpile the project's TypeScipt to JavaScript.
+"winCompile" and "linCompile" will tranpile the project's TypeScipt to JavaScript.
 
 ### Testing
 ```
-npm run test
+npm run winTest
+npm run linTest
 ```
-"test" does the following things in order:
+"winTest" and "linTest" do the following things in order:
 1. This will transpile all the TypeScript to JavaScript
 2. Browserify this Node.js project to a Browser Compatible JavaScript
 3. Start a server at http://127.0.0.1:9966 where you can view the project working
@@ -41,13 +43,26 @@ In addition to this, "test" will watch every .ts file, and will transpile, brows
 ```
 npm run build
 ```
-"build" will transpile the TypeScript to JavaScript, browserify the JavaScript, and save the whole project as "webbundle.js".
+"build" will transpile the TypeScript to JavaScript, browserify the JavaScript, and save the whole project as "webbundle.js", then compress it to "webbundle.min.js".
+
+### Cleaning
+```
+npm run winClean
+npm run linClean
+```
+"winClean" and "linClean" will clean the .js files in the root folder.
 
 ## Credits
 Thank you to all of the pokeCalcNTR Patrons!
 
 @imaboy321 (EzPzStreamz) and @Admiral-Fish for helping develop this and pokeCalcNTR with me
 
+/u/Shiny_Sylveon for designing the entire front end and css!
+
 Everyone listed in the [pokeCalcNTR Thread's Credits](gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
 
+@Quandra for their work with Gen 7 RNG and building [PokemonSunMoonRNGTool](https://github.com/Quandra/PokemonSunMoonRNGTool)
+
 @wwwwwwzx for their work with Gen 7 RNG and building upon PokemonSunMoonRNGTool to make [SMEncounterRNGTool](https://github.com/wwwwwwzx/SMEncounterRNGTool)
+
+RNG Reporter Founding Devs - Bill Young, Mike Suleski, and Andrew Ringer
