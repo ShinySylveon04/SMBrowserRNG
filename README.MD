@@ -2,13 +2,16 @@
 
 [![pokeCalcDiscord](https://discordapp.com/assets/07dca80a102d4149e9736d4b162cff6f.ico)](https://www.discord.gg/d8JuAvg)
 
-Browser-Based RNG Tool!  More descriptive description coming soon!
+> This Browser-Based RNG tool is a gateway to your dreams and mirror of the future.
+> Welcome to RNG that is OS independent and platform agnostic.
 
 ## About the Project
 
   - Started by the pokeCalcNTR Devs
   - Being designed for Desktop and Mobile usage
-  - Uses Node.js
+  - Uses Node.js to develop
+  - Only needs browser to use
+  - Written with Love
   - Written in TypeScript
 
 ## Installing
