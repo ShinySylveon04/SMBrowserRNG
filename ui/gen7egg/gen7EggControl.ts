@@ -24,10 +24,6 @@ export class gen7EggUi {
         ];
         var rngSettingObjects = [];
         var rngSettingFilters = [];
-        var rngKeyToSuccess = {
-            "search": rngSettingObjects,
-            "filter": rngKeyToSuccess
-        };
 
         //Parents
         for (let z = 1; z<=2; z++){
@@ -200,7 +196,7 @@ export class gen7EggUi {
         //Output View
         let outputView = new rngOutput(document);
 
-        searchButton.button.addEventListener("click", ()=>generateResults(rngKeyToSuccess, outputView.outBox, 100, document));
+        searchButton.button.addEventListener("click", ()=>generateResults(rngSettingObjects, outputView.outBox, 100, document));
 
     }
 }
