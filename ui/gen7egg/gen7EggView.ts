@@ -7,7 +7,6 @@ export class eggRNGView {
     public rngResult;
 
     constructor(rngObjects: any, frames: number){
-
         this.rngResult = [];
         var st: Array<number> = new Array(4);
 
@@ -31,9 +30,7 @@ export class eggRNGView {
 }
 
 
-export function getEggRNGSettings(rngCase){
-    let rngObjects = rngCase.search;
-    let rngFilter = rngCase.filter;
+export function getEggRNGSettings(rngObjects){
     let bothEverstone = false;
     let DestinyKnot = false;
     let Everstone = false;
