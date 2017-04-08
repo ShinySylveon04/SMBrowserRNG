@@ -6,7 +6,6 @@ type int = number;
 type byte = number;
 
 export module RNGSearch {
-
     export var Considerhistory: boolean;
     export var Considerdelay: boolean;
     export var PreDelayCorrection: int;

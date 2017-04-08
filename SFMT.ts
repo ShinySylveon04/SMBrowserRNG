@@ -1,6 +1,7 @@
 import { RandomBase } from "./RandomBase";
 import DeepCopy = require("deepcopy");
 import bigInt = require("big-integer");
+import { dataCopy } from "./utils";
 
 type UInt32 = number;
 type int = number;
@@ -113,4 +114,9 @@ type int = number;
                 b = 0;
         } while (a < this.N32);
     }
+
+    public deepCopy(tempsfmt: SFMT) {
+        return dataCopy(tempsfmt);
+    }
+
 }
