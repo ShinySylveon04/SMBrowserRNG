@@ -6,21 +6,18 @@ const TINYMT32_SH0: number = 1;
 const TINYMT32_SH1: number = 10;
 const TINYMT32_SH8: number = 8;
 
-export default class TinyMT
-{
+export default class TinyMT {
     public status: Array<number>;
     readonly param: TinyMTParameter;
 
-    constructor(status: Array<number>, param: TinyMTParameter)
-    {
+    constructor(status: Array<number>, param: TinyMTParameter) {
         this.status = new Array(4);
         for (var i = 0; i < 4; i++)
             this.status[i] = status[i];
         this.param = param;
     }
 
-    nextState()
-    {
+    nextState() {
         var y: number = this.status[3];
         var x: number = bigInt(this.status[0]).and(TINYMT32_MASK).xor(this.status[1]).xor(this.status[2]);
         x = bigInt(x).xor(bigInt(x).shiftLeft(TINYMT32_SH0));
@@ -30,8 +27,7 @@ export default class TinyMT
         this.status[2] = bigInt(y).shiftLeft(TINYMT32_SH1).xor(x).and(0xFFFFFFFF);
         this.status[3] = bigInt(y).and(0xFFFFFFFF);
 
-        if (bigInt(y).and(1) == 1)
-        {
+        if (bigInt(y).and(1) == 1) {
             this.status[1] = bigInt(this.status[1]).xor(this.param.mat1);
             this.status[2] = bigInt(this.status[2]).xor(this.param.mat2);
         }
@@ -45,4 +41,5 @@ export default class TinyMT
             t0 = bigInt(t0).xor(this.param.tmat).and(0xFFFFFFFF);
         return t0;
     }
+
 }
