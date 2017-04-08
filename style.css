@@ -1,33 +1,245 @@
-@import  url(https://fonts.googleapis.com/css?family=Montserrat);
-
-body{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 70vh;
-  font-family: Montserrat;
-  background: #00000000;
+body {
+  height: 125%;
 }
 
-.text-input{
+#top-tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /*background: linear-gradient (#606060, #505050, #606060);
+    background: -webkit-linear-gradient (#606060, #505050, #606060);*/
+    background-color: rgb(0, 153, 204);
+    box-shadow: 0 3px 2px rgba(0,0,0,.1), 0 3px 2px rgba(0,0,0,.2);
+}
+
+
+.top {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: verdana;
+    border-right: 1px solid rgb(0, 153, 204);
     position: relative;
-    margin-top: 50px;
 }
 
-input{
+li a:hover {
+    background-color: rgb(102, 204, 255);
+}
+
+.top::after {
+    content: '';
+    background-color: #FFF;
+    width: 1px;
+    height: 28px;
+    position: absolute;
+    margin-left: 16px;
+    margin-top: -4px;
+    z-index: 1;
+}
+
+#header {
+    height: 200px;
+    overflow: hidden;
+    border-bottom: 5px solid rgb(102, 204, 255);
+    /*background-color: rgb(0, 153, 204);*/
+}
+
+h1 {
+    color: rgb(0, 51, 153);
+    font-weight: 700;
+    font-family: georgia;
+    font-style: italic;
+    line-height: 100px;
+    text-align: center;
+    font-size: 4em;
+    text-shadow: 2px 2px 5px rgba(0,0,0,.5), 2px 2px 5px rgba(0,0,0,.6);
+    text-decoration: underline;
+}
+
+#sidebar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(0, 153, 204);
+    box-shadow: 2px 3px 2px rgba(0,0,0,.1), 2px 3px 2px rgba(0,0,0,.2);
+    width: 150px;
+    border: 4px solid rgb(102, 204, 255);
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+}
+
+.side {
+    float: left;
+    display: block;
+    color: white;
+    text-align: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: verdana;
+    position: relative;
+    width: 150px;
+    border-bottom: 1px solid rgb(102, 204, 255);
+}
+
+#bottom-tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /*background: linear-gradient (#606060, #505050, #606060);
+    background: -webkit-linear-gradient (#606060, #505050, #606060);*/
+    background-color: rgb(0, 153, 204);
+    box-shadow: 0 3px 2px rgba(0,0,0,.1), 0 3px 2px rgba(0,0,0,.2);
+    margin-left: 158px;
+    margin-top: -196px;
+}
+
+.bottom {
+    float: left;
+    /*margin-left: 100px;*/
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: verdana;
+    border-right: 1px solid rgb(0, 153, 204);
+    position: relative;
+}
+
+.bottom::after {
+    content: '';
+    background-color: #FFF;
+    width: 1px;
+    height: 28px;
+    position: absolute;
+    margin-left: 16px;
+    margin-top: -4px;
+    z-index: 1;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(0, 153, 204);
+    overflow: hidden;
+    margin-left: 100px;
+    max-width: 100px;
+}
+
+.footer {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 7px 8px;
+    text-decoration: none;
+    font-family: verdana;
+    position: relative;
+}
+
+/* New Additions */
+
+
+/* Entire Container */
+.settingsContainer {
+    position: relative;
+    display: flex;
+    left: 15%;
+    width: 75%;
+}
+
+/* Parent 1 IVs */
+
+h2 {
+font-family: georgia;
+font-style: italic;
+font-weight: 400;
+font-size: 1.5em;
+color: #808080;
+/*text-shadow: 1px 1px 3px rgba(0,0,0,.5), 1px 1px 3px rgba(0,0,0,.6);*/
+}
+
+h3 {
+font-family: georgia;
+font-style: italic;
+font-weight: 400;
+font-size: 1.5em;
+color: #808080;
+/*text-shadow: 1px 1px 3px rgba(0,0,0,.5), 1px 1px 3px rgba(0,0,0,.6);*/
+}
+
+.parentIvs {
+    float: left;
+    margin-left: 10px;
+    border: 3px solid rgb(102, 204, 255);
+    margin-top: 10px;
+    padding: 0px 10px 5px 10px;
+    border-radius: 3px;
+    box-shadow: 3px 3px 2px rgba(0,0,0,.1), 3px 3px 2px rgba(0,0,0,.2);
+    font-family: verdana;
+    font-size: .75em;
+}
+/* Help Hover
+.help {
+    top: 5%;
+    position: absolute;
+    left: 15%;
+    font-weight: 400;
+    font-size: 1.5em;
+    color: rgb(0, 153, 204);
+    border-bottom: 1px dotted rgb(0, 153, 204);
     display: inline-block;
-    width: 300px;
-    height: 40px;
-    box-sizing: border-box;
-    outline: none;
+}
+
+/* Hover Box
+.help .helptext {
+    visibility: hidden;
+    width: auto;
+    background-color: rgb(0, 153, 204);
+    color: #FFF;
+    text-align: left;
+    padding: 5px;
+    border-radius: 3px;
+    position: absolute;
+    z-index: 1;
+    font-size: .75em;
+}
+
+.help:hover .helptext {
+    visibility: visible;
+}*/
+
+/* Entire IV box */
+
+.text-input {
+    position: relative;
+    margin-top: 5px;
+}
+
+.ivLabel {
+    width: 25px;
+}
+
+.ivInput {
+    display: inline-block;
+    width: 98px;
+    height: 18px;
     border: 1px solid lightgray;
     border-radius: 3px;
-    padding: 10px 10px 10px 100px;
+    padding: 10px;
+    text-align: right;
     transition: all 0.1s ease-out;
 }
 
-input + label{
+.ivInput + .ivLabel {
     position: absolute;
     top: 0;
     left: 0;
@@ -43,38 +255,153 @@ input + label{
     transition-delay: 0s;
 }
 
-input:focus + label{
-    opacity: 0.2;
+.ivInput:focus + .ivLabel {
+    opacity: 0;
     border-radius: 3px;
-    background: rgb(204, 51, 255);
+    background: rgb(102, 204, 255);
     transition: all 0.4s ease-out;
 }
 
-input:focus{
+.ivInput:focus {
     padding: 10px;
+    width: 60px;
     transition: all 0.3s ease-out;
     transition-delay: 0s;
 }
 
-a {
-    top: 0;
-    left: 0;
-    bottom: 0;
+
+
+.otherSettings {
+    margin-left: 15px;
     margin-top: 10px;
-    height: 40px;
-    line-height: 40px;
+    width 50%;
+    display: block;
+    border: 3px solid rgb(102, 204, 255);
+    border-radius: 3px;
+    box-shadow: 3px 3px 2px rgba(0,0,0,.1), 3px 3px 2px rgba(0,0,0,.2);
+    font-family: verdana;
+    font-size: .75em;
+    padding-left: 10px;
+}
+
+.subContainer {
+    display: flex;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.settingsLabel {
+    width: 50%;
+    align: left;
+}
+
+/* Selection Boxes */
+.settingsSelect {
+    width: 45%;
+    align: right;
+    margin-left: 5px;
+    border: 2px solid rgb(0, 153, 204);
+    border-radius: 2px;
+    background-color: #FFF;
+    box-shadow: 2px 2px 1px rgba(0,0,0,.1), 2px 2px 1px rgba(0,0,0,.2);
+}
+
+/* Begin Checkbox Editing */
+.settingsCheck {
+    -webkit-appearance: none; /*Hides Actual Checkbox*/
+    align: right;
+    width: 25px;
+    height: 25px;
+    border: 2px solid rgb(0, 153, 204);
+    border-radius: 2px;
+    background-color: #FFF;
+    box-shadow: 2px 2px 1px rgba(0,0,0,.1), 2px 2px 1px rgba(0,0,0,.2);
+}
+
+/* Makes Checkboxes Editable */
+.settingsCheck:checked:after {
+    content: '\2714';
+    color: rgb(0, 153, 204);
+    font-size: 1.5em;
+    border: none;
+}
+
+/* End Checkbox Editing */
+
+.seedContainer {
+    float: left;
+    display: block;
+    width: 200px;
+    margin-left: 15px;
+    margin-top: 10px;
+    border: 3px solid rgb(102, 204, 255);
+    border-radius: 3px;
+    box-shadow: 3px 3px 2px rgba(0,0,0,.1), 3px 3px 2px rgba(0,0,0,.2);
+    font-family: verdana;
+    font-size: .75em;
+    padding-left: 10px;
+}
+
+.seedBox {
+    float: left;
+    margin: 5px;
+}
+
+.searchBtn {
+    line-height: 20px;
+    height: 60px;
     color: white;
-    border-radius: 3px 0 0 3px;
-    padding: 10px;
-    background: rgb(0, 153, 204);
-    transition:all .3s ease;
+    border: 2px solid rgb(102, 204, 255);
+    border-radius: 2px;
+    box-shadow: 3px 3px 2px rgba(0,0,0,.1), 3px 3px 2px rgba(0,0,0,.2);
+    padding: 0 20px;
+    background: rgba(0, 153, 204, 1);
+    transform: translateZ(0) translateX(0);
+    transition: all 0.2s ease-in;
+    transition-delay: 0s;
+    margin-top: 5%;
+    font-family: georgia;
+    font-style: italic;
+    font-weight: 700;
+    text-align: center;
+    line-height: 60px;
+    font-size: 1.5em;
 }
 
-.labelStretch{
-    width: 260px;
+.searchBtn:hover {
+    line-height: 20px;
+    height: 60px;
+    color: white;
+    border-radius: 3px;
+    padding: 0 20px;
+    background: rgb(102, 204, 255);
+    transform: translateZ(0) translateX(0);
+    transition: all 0.2s ease-in;
+    transition-delay: 0s;
+    font-family: georgia;
+    font-style: italic;
+    font-weight: 700;
+    text-align: center;
+    line-height: 60px;
+    font-size: 1.5em;
 }
 
-a:hover{
-    background: rgb(204, 51, 255);
-    transition:all .3s ease;
+.outputView {
+    width: 100%;
+    border: 1px  #CCC solid;
+    height: 450px;
+    margin: 30px;
+    overflow: scroll;
+    box-shadow:
+        inset 0px 11px 8px -10px #CCC,
+        inset 0px -11px 8px -10px #CCC;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    border: 2px solid rgba(0, 153, 204, .7);
+    border-radius: 7px;
 }
