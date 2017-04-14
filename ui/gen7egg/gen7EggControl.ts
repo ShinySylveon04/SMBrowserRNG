@@ -1,4 +1,4 @@
-import { IVs, generateButton, rngOutput } from "../utils/genericUI";
+import { IVs, generateButton, rngOutput, natureList, genderList } from "../utils/genericUI";
 import { eggRNGView } from "./gen7EggView";
 
 export class gen7EggUi {
@@ -10,20 +10,22 @@ export class gen7EggUi {
         //Create Lists
         let listList = [
             ["None", "Destiny Knot", "Everstone"],
-            ["1", "2", "H"],
-            ["Male", "Female", "Genderless"]
+            ["1", "2", "H"]
         ];
-        let listNames = ["Item", "Ability", "Gender"];
+        let listNames = ["Item", "Ability"];
         let generalList = [
-            ["difSpec", "mmCheck", "scCheck"],
-            ["Different Species", "Masuda Method", "Shiny Charm"]
+            ["difSpec", "mmCheck", "scCheck", "shinyOnly"],
+            ["Different Species", "Masuda Method", "Shiny Charm", "Shiny Only"]
         ];
         let genderList = [
             ["50", "875", "75", "25", "100", "0", "genderless"],
             ["♂1:♀1", "♂7:♀1", "♂3:♀1", "♂1:♀3", "♂ Only", "♀ Only", "Genderless"]
         ];
-        var rngSettingObjects = [];
-        var rngSettingFilters = [];
+        var rngSettingObjects = {
+            "parentIVs": [],
+            "isDitto": [],
+            "seeds": []
+        };
 
         //Parents
         for (let z = 1; z<=2; z++){
@@ -38,10 +40,10 @@ export class gen7EggUi {
             //IVs
             var ParentIVs = new IVs(document, parentContainer, z.toString(10));
             //Add to settings List
-            rngSettingObjects.push(ParentIVs);
+            rngSettingObjects.parentIVs.push(ParentIVs);
 
             //Item, Ability, isDitto, and Gender Settings
-            for(let i = 0; i<3; i++){
+            for(let i = 0; i<listNames.length; i++){
                 let subContainer = document.createElement("div");
                 subContainer.setAttribute("class", "subContainer");
                 parentContainer.appendChild(subContainer);
@@ -59,9 +61,9 @@ export class gen7EggUi {
                 subContainer.appendChild(breedingItemSelect);
 
                 //Add to settings List
-                rngSettingObjects.push(breedingItemSelect);
+                rngSettingObjects[listNames[i]+z] = breedingItemSelect;
 
-                for(let j = 0; j<3; j++){
+                for(let j = 0; j<listList[i].length; j++){
                     let option = document.createElement("option");
                     option.setAttribute("value", listList[i][j]);
                     option.innerHTML = listList[i][j];
@@ -88,7 +90,7 @@ export class gen7EggUi {
             dittoContainer.appendChild(isDittoInput);
 
             //Add to settings List
-            rngSettingObjects.push(isDittoInput);
+            rngSettingObjects.isDitto.push(isDittoInput);
         }
 
         //General Egg settings
@@ -102,7 +104,7 @@ export class gen7EggUi {
         generalEggSettingsContainer.appendChild(generalLabel);
 
         //Actual General Settings
-        for(let i = 0; i<3; i++){
+        for(let i = 0; i<generalList[0].length; i++){
             let subContainer = document.createElement("div");
             subContainer.setAttribute("class", "subContainer");
             let subLabel = document.createElement("label");
@@ -121,7 +123,7 @@ export class gen7EggUi {
             generalEggSettingsContainer.appendChild(subContainer);
 
             //Add to settings List
-            rngSettingObjects.push(subInput);
+            rngSettingObjects[generalList[0][i]] = subInput;
         }
 
         //Gender Ratio for General Settings
@@ -148,7 +150,7 @@ export class gen7EggUi {
         }
 
         //Add to settings List
-        rngSettingObjects.push(genderSelect);
+        rngSettingObjects["genderRatio"] = genderSelect;
 
         let tsvBox = document.createElement("div");
         tsvBox.setAttribute("class", "seedBox");
@@ -164,7 +166,7 @@ export class gen7EggUi {
         tsvBox.appendChild(tsvInput);
 
         //Add to settings List
-        rngSettingObjects.push(tsvInput);
+        rngSettingObjects["TSV"] = tsvInput;
 
         //Egg Seeds
         let seedContainer = document.createElement("div");
@@ -187,7 +189,7 @@ export class gen7EggUi {
             seedBox.appendChild(seedInput);
 
             //Add to settings List
-            rngSettingObjects.push(seedInput);
+            rngSettingObjects.seeds.push(seedInput);
         }
 
         //Generate Button
@@ -223,6 +225,7 @@ function generateResults(parameters, resultBox, frameAmount, document){
 
     //Create New rows and populate with results
     for(let i = 0; i<eggRngFinished.rngResult.length; i++){
+        let dataOut = eggRngFinished.rngResult[i];
         //Create Table Row and Cells
         let outRow = document.createElement("tr");
         let outFrame = document.createElement("td");
@@ -235,8 +238,8 @@ function generateResults(parameters, resultBox, frameAmount, document){
         let outPID = document.createElement("td");
         let outPSV = document.createElement("td");
         let outEC = document.createElement("td");
-        let dataOut = eggRngFinished.rngResult[i];
         let formattedIVs = "";
+        let formattedSeeds = "";
 
         //Format IVs
         for(let i = 0; i<6; i++){
@@ -246,20 +249,27 @@ function generateResults(parameters, resultBox, frameAmount, document){
             formattedIVs+=dataOut.IVs[i];
         }
 
+        //Format Seeds
+        for(let i = 0; i<4; i++){
+            if(i!=0){
+                formattedSeeds+=", ";
+            }
+            formattedSeeds+=dataOut.Seed[(3-i)].toString(16);
+        }
+
         //Populate Cells with data
         outIVs.innerHTML = formattedIVs;
         outAbility.innerHTML = dataOut.Ability;
         outEC.innerHTML = dataOut.EC;
         outFrameAdv.innerHTML = dataOut.FramesUsed;
-        outGender.innerHTML = dataOut.Gender;
-        outNature.innerHTML = dataOut.Nature;
-        outSeed.innerHTML = dataOut.Seed;
+        outGender.innerHTML = genderList[0][dataOut.Gender];
+        outNature.innerHTML = natureList[dataOut.Nature];
+        outSeed.innerHTML = formattedSeeds;
         outPID.innerHTML = dataOut.PID;
         outPSV.innerHTML = dataOut.PSV;
         outFrame.innerHTML = i;
 
         //Attach Cells to Row and Tow to Table
-        outTable.appendChild(outRow);
         outRow.appendChild(outFrame);
         outRow.appendChild(outFrameAdv);
         outRow.appendChild(outSeed);
@@ -270,6 +280,20 @@ function generateResults(parameters, resultBox, frameAmount, document){
         outRow.appendChild(outPID);
         outRow.appendChild(outPSV);
         outRow.appendChild(outEC);
+
+        //Poor filter
+        if(parameters.shinyOnly.checked==true){
+            if(dataOut.PSV == parameters.TSV.value){
+                outTable.appendChild(outRow);
+            }
+        } else {
+            outTable.appendChild(outRow);
+        }
+    }
+
+    //Remove Previous Resultswhile (myNode.firstChild) {
+    while (resultBox.firstChild) {
+        resultBox.removeChild(resultBox.firstChild);
     }
 
     //Show Results
