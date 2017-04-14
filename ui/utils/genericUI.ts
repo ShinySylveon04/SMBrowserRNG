@@ -29,7 +29,7 @@ export class IVs {
             ivInput.setAttribute("class", "ivInput");
             ivInput.setAttribute("min", "0");
             ivInput.setAttribute("max", "31");
-            ivInput.setAttribute("value", "0");
+            ivInput.setAttribute("value", "31");
             let ivLabel = document.createElement("label");
             ivLabel.setAttribute("for", ivList[j]+identifier);
             ivLabel.setAttribute("class", "ivLabel");
@@ -65,14 +65,13 @@ export class generateButton{
 export class rngOutput{
     public outBox;
 
-    constructor(document: any){
+    constructor(document: any, container: any){
 
         let newOuput = document.createElement("div");
-        newOuput.setAttribute("class", "settingsContainer");
-        document.body.appendChild(newOuput);
+        newOuput.setAttribute("class", "outputView");
+        container.appendChild(newOuput);
 
         let newOutview = document.createElement("div");
-        newOutview.setAttribute("class", "outputView");
         newOutview.setAttribute("id", "rngOutput");
         newOuput.appendChild(newOutview);
         this.outBox = newOutview;

@@ -10,10 +10,10 @@ export class eggRNGView {
         this.rngResult = [];
         var st: Array<number> = new Array(4);
 
-        st[3] = parseInt(rngObjects.seeds[3].value, 16);
-        st[2] = parseInt(rngObjects.seeds[2].value, 16);
-        st[1] = parseInt(rngObjects.seeds[1].value, 16);
-        st[0] = parseInt(rngObjects.seeds[0].value, 16);
+        st[3] = parseInt(rngObjects.seeds[0].value, 16);
+        st[2] = parseInt(rngObjects.seeds[1].value, 16);
+        st[1] = parseInt(rngObjects.seeds[2].value, 16);
+        st[0] = parseInt(rngObjects.seeds[3].value, 16);
 
         var status: Array<number> = [st[0], st[1], st[2], st[3]];
         var tiny = new TinyMT(status, new TinyMTParameter(0x8f7011ee, 0xfc78ff1f, 0x3793fdff));
@@ -76,7 +76,7 @@ export function getEggRNGSettings(rngObjects){
     rng.GenderFemale = false;
     rng.International = rngObjects.mmCheck.checked;
     rng.ShinyCharm = rngObjects.scCheck.checked;
-    rng.Heterogeneous = true;
+    rng.Heterogeneous = rngObjects.difSpec.checked;
     rng.Both_Everstone = bothEverstone;
     rng.Everstone = Everstone;
     rng.DestinyKnot = DestinyKnot;
@@ -84,8 +84,8 @@ export function getEggRNGSettings(rngObjects){
     rng.PowerItems = false;
     rng.MalePowerStat = -2;
     rng.FemalePowerStat = -1;
-    rng.ParentAbility = 1;
-    rng.ConciderTSV = true;
+    rng.ParentAbility = (rngObjects.isDitto[1].checked) ? parseInt(rngObjects.Ability1.value, 10) : parseInt(rngObjects.Ability2.value, 10);
+    rng.ConciderTSV = (rngObjects.TSV.value!="") ? true : false;
     rng.SearchOtherTSV = false;
 
     rng.TSV = rngObjects.TSV.value;
