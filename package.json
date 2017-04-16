@@ -32,6 +32,7 @@
   "dependencies": {
     "big-integer": "^1.6.19",
     "bluebird": "^3.5.0",
-    "deepcopy": "^0.6.3"
+    "deepcopy": "^0.6.3",
+    "konami-js": "0.0.2"
   }
 }
