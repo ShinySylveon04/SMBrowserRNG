@@ -38,18 +38,18 @@ export function getEggRNGSettings(rngObjects){
     let post_parent_ivs = rngObjects.parentIVs[1].ivObjects;
     var rng: EggRNGSearch.EggRNGSearch = new EggRNGSearch.EggRNGSearch();
 
-    if(rngObjects.Item1.value=="Everstone"
-     && rngObjects.Item2.value=="Everstone") {
+    if(rngObjects.Item0.value=="Everstone"
+     && rngObjects.Item1.value=="Everstone") {
          bothEverstone = true;
      }
 
-    if(rngObjects.Item1.value=="Everstone"
-        || rngObjects.Item2.value=="Everstone") {
+    if(rngObjects.Item0.value=="Everstone"
+        || rngObjects.Item1.value=="Everstone") {
         Everstone = true;
     }
 
-    if(rngObjects.Item1.value=="Destiny Knot"
-        || rngObjects.Item2.value=="Destiny Knot") {
+    if(rngObjects.Item0.value=="Destiny Knot"
+        || rngObjects.Item1.value=="Destiny Knot") {
         DestinyKnot = true;
     }
 
@@ -71,9 +71,9 @@ export function getEggRNGSettings(rngObjects){
     ];
 
     rng.GenderRatio = rngObjects.genderRatio.value;
-    rng.GenderRandom = true;
-    rng.GenderMale = false;
-    rng.GenderFemale = false;
+    rng.GenderRandom = (rngObjects.genderRatio.value!="100" && rngObjects.genderRatio.value!="0") ? true : false;
+    rng.GenderMale = (rngObjects.genderRatio.value=="100") ? true : false;
+    rng.GenderFemale = (rngObjects.genderRatio.value=="0") ? true : false;
     rng.International = rngObjects.mmCheck.checked;
     rng.ShinyCharm = rngObjects.scCheck.checked;
     rng.Heterogeneous = rngObjects.difSpec.checked;
@@ -84,7 +84,7 @@ export function getEggRNGSettings(rngObjects){
     rng.PowerItems = false;
     rng.MalePowerStat = -2;
     rng.FemalePowerStat = -1;
-    rng.ParentAbility = (rngObjects.isDitto[1].checked) ? parseInt(rngObjects.Ability1.value, 10) : parseInt(rngObjects.Ability2.value, 10);
+    rng.ParentAbility = (rngObjects.isDitto[1].checked) ? parseInt(rngObjects.Ability0.value, 10) : parseInt(rngObjects.Ability1.value, 10);
     rng.ConciderTSV = (rngObjects.TSV.value!="") ? true : false;
     rng.SearchOtherTSV = false;
 

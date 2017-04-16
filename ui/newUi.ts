@@ -25,7 +25,7 @@ export default class masterUi {
             //SuMo Header
             let sumoHeaderDiv = document.createElement("div");
             let sumoHeader = document.createElement("h1");
-            sumoHeaderDiv.setAttribute("id", "header");
+            sumoHeaderDiv.setAttribute("class", "header");
             sumoHeader.innerHTML = "Sun & Moon Browser RNG";
             sumoHeaderDiv.appendChild(sumoHeader);
 
@@ -60,7 +60,12 @@ export default class masterUi {
                 }
             }
 
-            tabOjects["eggs"].addEventListener("click", ()=>createGen7EggUi(document, settingsContainer, viewContainer));
+            tabOjects["eggs"].addEventListener("click", ()=>
+                createGen7EggUi(document, settingsContainer, viewContainer)
+            );
+            tabOjects["gen7"].addEventListener("click", ()=>
+                createGen7EggUi(document, settingsContainer, viewContainer)
+            );
 
             //Settings container
             let settingsContainer = document.createElement("div");
