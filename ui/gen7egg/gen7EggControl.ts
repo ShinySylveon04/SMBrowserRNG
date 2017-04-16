@@ -1,4 +1,4 @@
-import { IVs, generateButton, rngOutput, natureList, genderList } from "../utils/genericUI";
+import { IVs, generateButton, rngOutput, natureList, genderList, rngFilters } from "../utils/genericUI";
 import { eggRNGView } from "./gen7EggView";
 
 export class gen7EggUi {
@@ -18,28 +18,28 @@ export class gen7EggUi {
         ];
         let listNames = ["Item", "Ability"];
         let generalList = [
-            ["difSpec", "mmCheck", "scCheck", "shinyOnly"],
-            ["Different Species", "Masuda Method", "Shiny Charm", "Shiny Only"]
+            ["difSpec", "mmCheck", "scCheck"],
+            ["Different Species", "Masuda Method", "Shiny Charm"]
         ];
-        let genderList = [
+        let genderRatioList = [
             ["50", "875", "75", "25", "100", "0", "genderless"],
             ["♂1:♀1", "♂7:♀1", "♂3:♀1", "♂1:♀3", "♂ Only", "♀ Only", "Genderless"]
         ];
         let defaultSeeds = ["12345678", "DEADFACE", "DEADBEEF", "BEEFFACE"];
+        let parentGender = ["♂", "♀"];
         var rngSettingObjects = {
             "parentIVs": [],
             "isDitto": [],
             "seeds": []
         };
-
         //Parents
-        for (let z = 1; z<=2; z++){
+        for (let z = 0; z<2; z++){
             let parentContainer = document.createElement("div");
             parentContainer.setAttribute("class", "parentIvs");
             settingsContainer.appendChild(parentContainer);
 
             let parentLabel = document.createElement("h2");
-            parentLabel.innerHTML = "Parent "+z;
+            parentLabel.innerHTML = parentGender[z]+" Parent";
             parentContainer.appendChild(parentLabel);
 
             //IVs
@@ -149,8 +149,8 @@ export class gen7EggUi {
 
         for(let i = 0; i<7; i++){
             let genderOption = document.createElement("option");
-            genderOption.setAttribute("value", genderList[0][i]);
-            genderOption.innerHTML = genderList[1][i];
+            genderOption.setAttribute("value", genderRatioList[0][i]);
+            genderOption.innerHTML = genderRatioList[1][i];
             genderSelect.appendChild(genderOption);
         }
 
@@ -172,6 +172,14 @@ export class gen7EggUi {
 
         //Add to settings List
         rngSettingObjects["TSV"] = tsvInput;
+
+        //filters
+        let filterContainer = document.createElement("div");
+        filterContainer.setAttribute("class", "otherSettings");
+        settingsContainer.appendChild(filterContainer);
+
+        let filters = new rngFilters(document, filterContainer);
+        rngSettingObjects["filters"] = filters;
 
         //Egg Seeds
         let seedContainer = document.createElement("div");
@@ -204,14 +212,17 @@ export class gen7EggUi {
         //Output View
         let outputView = new rngOutput(document, viewContainer);
 
-        searchButton.button.addEventListener("click", ()=>generateResults(rngSettingObjects, outputView.outBox, 100, document));
+        searchButton.button.addEventListener("click", ()=>generateResults(rngSettingObjects, outputView.outBox, document));
 
     }
 }
 
-function generateResults(parameters, resultBox, frameAmount, document){
+function generateResults(parameters, resultBox, document){
+console.log(parameters);
+    let filters = parameters.filters.settings;
+    let ivFilter = filters.ivFilter;
+    let frameAmount = (filters.frameFilter.value=="") ? 1 : parseInt(filters.frameFilter.value, 10)+1;
     let eggRngFinished = new eggRNGView(parameters, frameAmount);
-    console.log(parameters);
     let outHeaders = ["Frame", "Frame Adv", "Seed", "IVs", "Gender", "Ability",
         "Nature", "PID", "PSV", "EC"];
 
@@ -232,6 +243,10 @@ function generateResults(parameters, resultBox, frameAmount, document){
 
     //Create New rows and populate with results
     for(let i = 0; i<eggRngFinished.rngResult.length; i++){
+
+        //Bool for filters to use
+        let filterPass = true;
+
         let dataOut = eggRngFinished.rngResult[i];
         //Create Table Row and Cells
         let outRow = document.createElement("tr");
@@ -255,6 +270,9 @@ function generateResults(parameters, resultBox, frameAmount, document){
                 formattedIVs+="/";
             }
             formattedIVs+=dataOut.IVs[i];
+            filterPass = (filterPass) ? ivCheck(ivFilter.equalityFilters[i].value,
+                parseInt(ivFilter.ivObjects[i].value, 10),
+                parseInt(dataOut.IVs[i], 10)) : false;
         }
 
         //Format Seeds
@@ -266,8 +284,8 @@ function generateResults(parameters, resultBox, frameAmount, document){
         }
 
         //Check if either parent has Everstone
-        if(parameters.Item1.value=="Everstone"
-            || parameters.Item2.value=="Everstone") {
+        if(parameters.Item0.value=="Everstone"
+            || parameters.Item1.value=="Everstone") {
             everstoneBool = true;
         }
 
@@ -276,7 +294,7 @@ function generateResults(parameters, resultBox, frameAmount, document){
         outAbility.innerHTML = (dataOut.Ability==2) ? "H" : dataOut.Ability+1;
         outEC.innerHTML = dataOut.EC.toString(16).toUpperCase();
         outFrameAdv.innerHTML = dataOut.FramesUsed+1;
-        outGender.innerHTML = genderList[0][dataOut.Gender];
+        outGender.innerHTML = (parameters.genderRatio.value!="genderless") ? genderList[0][dataOut.Gender] : "-";
         outNature.innerHTML = (everstoneBool) ? "Everstone" : natureList[dataOut.Nature];
         outSeed.innerHTML = formattedSeeds;
         outPID.innerHTML = isNaN(dataOut.PID) ? "-" : dataOut.PID.toString(16).toUpperCase();
@@ -295,21 +313,44 @@ function generateResults(parameters, resultBox, frameAmount, document){
         outRow.appendChild(outPSV);
         outRow.appendChild(outEC);
 
-        //Poor filter
-        if(parameters.shinyOnly.checked==true){
-            if(dataOut.PSV == parameters.TSV.value){
-                outTable.appendChild(outRow);
-            }
-        } else {
+        //Poor temporary filters
+        if(filters.shinyOnly.checked==true && dataOut.PSV != parameters.TSV.value){
+            filterPass = false;
+        }
+        if(filters.GenderFilter.value=="Male" && dataOut.Gender!="0"){
+            filterPass = false;
+        }
+        if(filters.GenderFilter.value=="Female" && dataOut.Gender!="1"){
+            filterPass = false;
+        }
+        if(filters.AbilityFilter.value!="None" && filters.AbilityFilter.value!=dataOut.Ability){
+            filterPass = false;
+        }
+        if(filters.NatureFilter.value!="None" && filters.NatureFilter.value!=outNature.innerHTML){
+            filterPass = false;
+        }
+        if(filterPass){
             outTable.appendChild(outRow);
         }
     }
 
-    //Remove Previous Resultswhile (myNode.firstChild) {
+    //Remove Previous Results
     while (resultBox.firstChild) {
         resultBox.removeChild(resultBox.firstChild);
     }
 
     //Show Results
     resultBox.appendChild(outTable);
+}
+
+function ivCheck(ivSign, currIVFilter, currIV){
+    if(ivSign=="<=" && currIVFilter<currIV){
+        return false;
+    } else if(ivSign=="==" && currIVFilter!=currIV){
+        return false;
+    } else if(ivSign==">" && currIVFilter>=currIV){
+        return false;
+    } else {
+        return true;
+    }
 }
