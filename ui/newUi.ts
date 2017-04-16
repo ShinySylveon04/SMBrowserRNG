@@ -1,4 +1,5 @@
 import { gen7EggUi } from "./gen7egg/gen7EggControl"
+import * as Konami from "konami-js";
 
 export default class masterUi {
 
@@ -82,6 +83,11 @@ export default class masterUi {
 
             //Add Donate Button Last
             document.body.appendChild(donateUl);
+            
+            //Nothing
+            let egg = new Konami(function(){
+                easter(document, settingsContainer);
+            });
         }
 }
 
@@ -109,4 +115,20 @@ function createGen7EggUi(document, settingsContainer, viewContainer){
         viewContainer.removeChild(viewContainer.firstChild);
     }
     new gen7EggUi(document, settingsContainer, viewContainer);
+}
+
+function easter(document, container){
+    console.log("Konami");
+    //Add Stylesheet
+    let styleLink = document.createElement("link");
+    styleLink.setAttribute("rel", "stylesheet");
+    styleLink.setAttribute("href", "bubbles.css");
+    document.head.appendChild(styleLink);
+
+    for(let i = 1; i<=3; i++){
+        let star = document.createElement("div");
+        star.setAttribute("id", "stars"+i);
+        document.body.appendChild(star);
+    }
+
 }
