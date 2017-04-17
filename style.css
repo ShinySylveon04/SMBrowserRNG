@@ -317,7 +317,7 @@ color: #808080;
 /* Begin Checkbox Editing */
 .settingsCheck {
     -webkit-appearance: none; /*Hides Actual Checkbox*/
-    align: right;
+    text-align: center;
     width: 25px;
     height: 25px;
     border: 2px solid rgb(0, 153, 204);
